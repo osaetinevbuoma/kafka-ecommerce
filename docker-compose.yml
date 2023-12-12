@@ -1,0 +1,197 @@
+version: '3.9'
+
+services:
+  marketplace:
+    container_name: kafka-ecommerce-marketplace
+    build:
+      context: marketplace
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQL_URL=jdbc:mysql://marketplace-db/marketplace?serverTimezone=UTC
+      - MYSQL_USER=marketplace
+      - MYSQL_PASSWORD=marketplace
+      - KAFKA_BROKER=http://kafka:9093
+    volumes:
+      - ./marketplace:/app
+    depends_on:
+      marketplace-db:
+        condition: service_started
+      kafka:
+        condition: service_started
+      zookeeper:
+        condition: service_started
+    networks:
+      - kafka-ecommerce-network
+
+  marketplace-db:
+    image: mysql:latest
+    container_name: kafka-ecommerce-marketplace-db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_URL=jdbc:mysql://marketplace-db/marketplace?serverTimezone=UTC
+      - MYSQL_USER=marketplace
+      - MYSQL_PASSWORD=marketplace
+      - MYSQL_DATABASE=marketplace
+      - MYSQL_ROOT_PASSWORD=marketplace
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_RANDOM_ROOT_PASSWORD=
+    volumes:
+      - marketplace_mysql_data:/var/lib/mysql
+      - marketplace_mysql_config:/etc/mysql/conf.d
+    networks:
+      - kafka-ecommerce-network
+
+  payment:
+    container_name: kafka-ecommerce-payment
+    build:
+      context: payment
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8080"
+    environment:
+      - MYSQL_URL=jdbc:mysql://payment-db/payment?serverTimezone=UTC
+      - MYSQL_USER=payment
+      - MYSQL_PASSWORD=payment
+      - KAFKA_BROKER=http://kafka:9093
+    volumes:
+      - ./payment:/app
+    depends_on:
+      payment-db:
+        condition: service_started
+      kafka:
+        condition: service_started
+      zookeeper:
+        condition: service_started
+    networks:
+      - kafka-ecommerce-network
+
+  payment-db:
+    image: mysql:latest
+    container_name: kafka-ecommerce-payment-db
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_URL=jdbc:mysql://payment-db/payment?serverTimezone=UTC
+      - MYSQL_USER=payment
+      - MYSQL_PASSWORD=payment
+      - MYSQL_DATABASE=payment
+      - MYSQL_ROOT_PASSWORD=payment
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_RANDOM_ROOT_PASSWORD=
+    volumes:
+      - payment_mysql_data:/var/lib/mysql
+      - payment_mysql_config:/etc/mysql/conf.d
+    networks:
+      - kafka-ecommerce-network
+
+  fulfilment:
+    container_name: kafka-ecommerce-fulfilment
+    build:
+      context: fulfilment
+      dockerfile: Dockerfile
+    ports:
+      - "6000:6000"
+    environment:
+      - MYSQL_URL=jdbc:mysql://fulfilment-db/fulfilment?serverTimezone=UTC
+      - MYSQL_USER=fulfilment
+      - MYSQL_PASSWORD=fulfilment
+      - KAFKA_BROKER=http://kafka:9093
+    volumes:
+      - ./fulfilment:/app
+    depends_on:
+      fulfilment-db:
+        condition: service_started
+      kafka:
+        condition: service_started
+      zookeeper:
+        condition: service_started
+    networks:
+      - kafka-ecommerce-network
+
+  fulfilment-db:
+    image: mysql:latest
+    container_name: kafka-ecommerce-fulfilment-db
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_URL=jdbc:mysql://fulfilment-db/fulfilment?serverTimezone=UTC
+      - MYSQL_USER=fulfilment
+      - MYSQL_PASSWORD=fulfilment
+      - MYSQL_DATABASE=fulfilment
+      - MYSQL_ROOT_PASSWORD=fulfilment
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_RANDOM_ROOT_PASSWORD=
+    volumes:
+      - fulfilment_mysql_data:/var/lib/mysql
+      - fulfilment_mysql_config:/etc/mysql/conf.d
+    networks:
+      - kafka-ecommerce-network
+
+  email:
+    container_name: kafka-ecommerce-email
+    build:
+      context: email
+      dockerfile: Dockerfile
+    ports:
+      - "5050:5050"
+    environment:
+      - KAFKA_BROKER=http://kafka:9093
+    volumes:
+      - ./email:/app
+    depends_on:
+      kafka:
+        condition: service_started
+      zookeeper:
+        condition: service_started
+    networks:
+      - kafka-ecommerce-network
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.6
+    container_name: kafka-ecommerce-broker
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/bitnami
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    networks:
+      - kafka-ecommerce-network
+  
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.9
+    container_name: kafka-ecommerce-zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper_data:/bitnami/zookeeper
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - kafka-ecommerce-network
+
+volumes:
+  marketplace_mysql_data:
+  marketplace_mysql_config:
+  payment_mysql_data:
+  payment_mysql_config:
+  fulfilment_mysql_data:
+  fulfilment_mysql_config:
+  kafka_data:
+  zookeeper_data:
+
+networks:
+  kafka-ecommerce-network:
+    driver: bridge

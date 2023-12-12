@@ -1,0 +1,6 @@
+/.idea/**
+.DS_Store
+/email/__pycache__
+/email/venv
+/fulfilment/__pycache__
+/fulfilment/venv
