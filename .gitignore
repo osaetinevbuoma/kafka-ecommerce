@@ -2,5 +2,7 @@
 .DS_Store
 /email/__pycache__
 /email/venv
+/email/email.iml
 /fulfilment/__pycache__
 /fulfilment/venv
+/fulfilment/fulfilment.iml
