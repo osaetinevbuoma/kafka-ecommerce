@@ -88,6 +88,7 @@ public class PaymentService {
             LOGGER.info("Total price of processed order => %s".formatted(totalPrice));
 
             ProcessedOrder processedOrder = this.processedOrderMapper.apply(order);
+            LOGGER.info("Processed Order => %s".formatted(processedOrder));
             sendEvent(processedOrder);
         });
     }

@@ -8,7 +8,6 @@ from models.ordered_products import OrderedProducts
 class ProcessedOrder(BaseModel):
     user_id: int
     order_id: str
-    total_price: float
     products: list[OrderedProducts]
     is_fulfilled: bool | None = None
 

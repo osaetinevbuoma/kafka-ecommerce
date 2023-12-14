@@ -1,8 +1,10 @@
 /.idea/**
 .DS_Store
 /email/__pycache__
+/email/models/__pycache__
 /email/venv
 /email/email.iml
 /fulfilment/__pycache__
+/fulfilment/models/__pycache__
 /fulfilment/venv
 /fulfilment/fulfilment.iml
