@@ -12,7 +12,7 @@ services:
       - MYSQL_URL=jdbc:mysql://marketplace-db/marketplace?serverTimezone=UTC
       - MYSQL_USER=marketplace
       - MYSQL_PASSWORD=marketplace
-      - KAFKA_BROKER=http://kafka:9093
+      - KAFKA_BROKER=http://kafka:9092
     volumes:
       - ./marketplace:/app
     depends_on:
@@ -55,7 +55,7 @@ services:
       - MYSQL_URL=jdbc:mysql://payment-db/payment?serverTimezone=UTC
       - MYSQL_USER=payment
       - MYSQL_PASSWORD=payment
-      - KAFKA_BROKER=http://kafka:9093
+      - KAFKA_BROKER=http://kafka:9092
     volumes:
       - ./payment:/app
     depends_on:
@@ -98,7 +98,7 @@ services:
       - MYSQL_URL=jdbc:mysql://fulfilment-db/fulfilment?serverTimezone=UTC
       - MYSQL_USER=fulfilment
       - MYSQL_PASSWORD=fulfilment
-      - KAFKA_BROKER=http://kafka:9093
+      - KAFKA_BROKER=http://kafka:9092
     volumes:
       - ./fulfilment:/app
     depends_on:
@@ -138,7 +138,7 @@ services:
     ports:
       - "5050:5050"
     environment:
-      - KAFKA_BROKER=http://kafka:9093
+      - KAFKA_BROKER=http://kafka:9092
     volumes:
       - ./email:/app
     depends_on:
@@ -150,28 +150,27 @@ services:
       - kafka-ecommerce-network
 
   kafka:
-    image: docker.io/bitnami/kafka:3.6
+    image: docker.io/bitnami/kafka:3.6.1
     container_name: kafka-ecommerce-broker
     ports:
       - "9092:9092"
     volumes:
       - kafka_data:/bitnami
     environment:
-      # KRaft settings
       - KAFKA_CFG_NODE_ID=0
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
-      # Listeners
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    depends_on:
+      zookeeper:
+        condition: service_started
     networks:
       - kafka-ecommerce-network
-  
+
   zookeeper:
-    image: docker.io/bitnami/zookeeper:3.9
+    image: docker.io/bitnami/zookeeper:3.9.1
     container_name: kafka-ecommerce-zookeeper
     ports:
       - "2181:2181"
