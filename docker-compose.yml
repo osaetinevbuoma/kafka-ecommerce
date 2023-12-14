@@ -124,6 +124,7 @@ services:
       - MYSQL_ROOT_PASSWORD=fulfilment
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_RANDOM_ROOT_PASSWORD=
+      - KAFKA_BROKER=kafka:9092
     volumes:
       - fulfilment_mysql_data:/var/lib/mysql
       - fulfilment_mysql_config:/etc/mysql/conf.d
@@ -138,7 +139,7 @@ services:
     ports:
       - "5050:5050"
     environment:
-      - KAFKA_BROKER=http://kafka:9092
+      - KAFKA_BROKER=kafka:9092
     volumes:
       - ./email:/app
     depends_on:

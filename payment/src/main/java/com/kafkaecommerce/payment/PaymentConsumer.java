@@ -31,9 +31,10 @@ public class PaymentConsumer implements ApplicationListener<ApplicationContextEv
     public void onApplicationEvent(ApplicationContextEvent event) {
         Properties properties = new Properties();
         properties.setProperty("bootstrap.servers", this.environment.getProperty("kafka.bootstrap-servers"));
-        properties.setProperty("group.id", "KAFKA_ECOMMERCE");
+        properties.setProperty("group.id", "KAFKA_PAYMENT_CONSUMER");
         properties.setProperty("enable.auto.commit", "true");
         properties.setProperty("auto.commit.interval.ms", "1000");
+        properties.setProperty("auto.offset.reset", "latest");
         properties.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.setProperty("value.deserializer", "com.kafkaecommerce.payment.serializers.OrderRecordDeserializer");
 
