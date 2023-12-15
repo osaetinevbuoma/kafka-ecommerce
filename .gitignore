@@ -6,5 +6,8 @@
 /email/email.iml
 /fulfilment/__pycache__
 /fulfilment/models/__pycache__
+/fulfilment/db_entities/__pycache__
+/fulfilment/exceptions/__pycache__
+/fulfilment/services/__pycache__
 /fulfilment/venv
 /fulfilment/fulfilment.iml

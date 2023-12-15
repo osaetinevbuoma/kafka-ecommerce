@@ -37,10 +37,9 @@ async def consume_events() -> None:
             elif records.error():
                 await structlog.get_logger(SERVICE_NAME).aerror(
                     "Consumer Error",
-                    error="ERROR: %s".format(records.error())
+                    error=f"ERROR: {records.error()}"
                 )
             else:
-                print(records.value().decode("UTF-8"))
                 processed_order = ProcessedOrder.model_validate(json.loads(records.value().decode("UTF-8")))
                 await send_email(order=processed_order)
     except KeyboardInterrupt:

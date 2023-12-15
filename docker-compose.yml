@@ -95,10 +95,10 @@ services:
     ports:
       - "6000:6000"
     environment:
-      - MYSQL_URL=jdbc:mysql://fulfilment-db/fulfilment?serverTimezone=UTC
+      - MYSQL_URL=mysql+pymysql://fulfilment:fulfilment@fulfilment-db/fulfilment
       - MYSQL_USER=fulfilment
       - MYSQL_PASSWORD=fulfilment
-      - KAFKA_BROKER=http://kafka:9092
+      - KAFKA_BROKER=kafka:9092
     volumes:
       - ./fulfilment:/app
     depends_on:
