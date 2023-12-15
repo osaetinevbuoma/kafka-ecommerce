@@ -20,8 +20,6 @@ services:
         condition: service_started
       kafka:
         condition: service_started
-      zookeeper:
-        condition: service_started
     networks:
       - kafka-ecommerce-network
 
@@ -62,8 +60,6 @@ services:
       payment-db:
         condition: service_started
       kafka:
-        condition: service_started
-      zookeeper:
         condition: service_started
     networks:
       - kafka-ecommerce-network
@@ -106,8 +102,6 @@ services:
         condition: service_started
       kafka:
         condition: service_started
-      zookeeper:
-        condition: service_started
     networks:
       - kafka-ecommerce-network
 
@@ -145,8 +139,6 @@ services:
     depends_on:
       kafka:
         condition: service_started
-      zookeeper:
-        condition: service_started
     networks:
       - kafka-ecommerce-network
 
@@ -164,21 +156,6 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-    depends_on:
-      zookeeper:
-        condition: service_started
-    networks:
-      - kafka-ecommerce-network
-
-  zookeeper:
-    image: docker.io/bitnami/zookeeper:3.9.1
-    container_name: kafka-ecommerce-zookeeper
-    ports:
-      - "2181:2181"
-    volumes:
-      - zookeeper_data:/bitnami/zookeeper
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
       - kafka-ecommerce-network
 
@@ -190,7 +167,6 @@ volumes:
   fulfilment_mysql_data:
   fulfilment_mysql_config:
   kafka_data:
-  zookeeper_data:
 
 networks:
   kafka-ecommerce-network:
