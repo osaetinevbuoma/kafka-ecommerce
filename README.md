@@ -17,6 +17,7 @@ Clone the repository and in the root folder, run the following command
 $ docker-compose up -d
 ```
 This builds (if running for the first time) and starts the Docker containers.
+To see the logs of each service as it communicates with the broker, open each container log in a separate terminal.
 
 ## REST Endpoints
 
