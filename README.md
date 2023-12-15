@@ -8,4 +8,4 @@ with the following functionalities:
 * The fulfillment team processed and fulfils the order
 * The user is notified that their order has been dispatched
 
-![architecture]("./screenshots/architecture.png")
+![architecture]("screenshots/architecture.png")
