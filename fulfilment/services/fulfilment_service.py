@@ -81,7 +81,7 @@ class FulfilmentService:
             if order is None:
                 raise OrderNotFoundException(f"Order with ID {order_id} was not found")
 
-            if order.is_fulfilled:
+            if order.is_fulfilled is True:
                 return
 
             order.is_fulfilled = True
