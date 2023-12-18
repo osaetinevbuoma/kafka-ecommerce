@@ -8,8 +8,7 @@ from sqlalchemy.engine.result import ScalarResult
 from sqlmodel import Session, select
 
 from db_entities import get_db_engine
-from db_entities.order import Order
-from db_entities.product import Product
+from db_entities.entities import Order, Product
 from exceptions.order_not_found_exception import OrderNotFoundException
 from models.ordered_products import OrderedProducts
 from models.processed_order import ProcessedOrder
@@ -62,8 +61,7 @@ class FulfilmentService:
             processed_orders: list[ProcessedOrder] = []
             for order in orders:
                 products: list[OrderedProducts] = []
-                ordered_products = session.exec(select(Product).where(Product.order_id == order.id))
-                for ordered_product in ordered_products:
+                for ordered_product in order.products:
                     product = OrderedProducts.model_validate(ordered_product.model_dump())
                     products.append(product)
 
@@ -89,8 +87,7 @@ class FulfilmentService:
             session.commit()
 
             products: list[OrderedProducts] = []
-            ordered_products = session.exec(select(Product).where(Product.order_id == order.id))
-            for ordered_product in ordered_products:
+            for ordered_product in order.products:
                 product = OrderedProducts.model_validate(ordered_product.model_dump())
                 products.append(product)
 
