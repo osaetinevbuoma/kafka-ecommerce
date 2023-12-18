@@ -2,7 +2,7 @@ import os
 import socket
 
 import structlog
-from confluent_kafka.cimpl import Producer
+from confluent_kafka import Producer
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.result import ScalarResult
 from sqlmodel import Session, select
