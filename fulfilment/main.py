@@ -64,7 +64,7 @@ async def root():
 
 
 @app.get("/fulfilment/list")
-async def list_filtered_orders(is_fulfilled: bool | None = None) -> list[ProcessedOrder]:
+async def list_orders(is_fulfilled: bool | None = None) -> list[ProcessedOrder]:
     fulfilment_service = get_fulfilment_service()
     return await fulfilment_service.list_orders(is_fulfilled=is_fulfilled)
 

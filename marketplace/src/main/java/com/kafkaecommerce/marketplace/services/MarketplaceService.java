@@ -96,6 +96,7 @@ public class MarketplaceService {
             properties.put("bootstrap.servers", this.environment.getProperty("kafka.bootstrap-servers"));
             properties.put("client.id", InetAddress.getLocalHost().getHostName());
             properties.put("linger.ms", 1);
+            properties.put("acks", "all");
             properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
             properties.put("value.serializer", "com.kafkaecommerce.marketplace.serializers.OrderRecordSerializer");
 

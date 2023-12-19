@@ -110,7 +110,7 @@ class FulfilmentService:
             value=order.model_dump_json(),
             callback=self._delivery_callback
         )
-        producer.flush()
+        producer.poll(1)
 
     def _delivery_callback(self, error, message) -> None:
         from main import SERVICE_NAME

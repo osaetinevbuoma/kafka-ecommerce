@@ -100,6 +100,7 @@ public class PaymentService {
             properties.put("group.id", "KAFKA_ECOMMERCE");
             properties.put("client.id", InetAddress.getLocalHost().getHostName());
             properties.put("linger.ms", 1);
+            properties.put("acks", "all");
             properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
             properties.put("value.serializer", "com.kafkaecommerce.payment.serializers.ProcessedOrderRecordSerializer");
 
