@@ -76,3 +76,5 @@ POST http://localhost:6000/fulfilment/process
 * Java + Spring Boot
 * Python + FastAPI
 * Apache Kafka
+
+![demo](screenshots/demo.gif)
