@@ -1,0 +1,30 @@
+version: 2
+
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/marketplace"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "gradle"
+    directory: "/payment"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "pip"
+    directory: "/fulfilment"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "pip"
+    directory: "/email"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
