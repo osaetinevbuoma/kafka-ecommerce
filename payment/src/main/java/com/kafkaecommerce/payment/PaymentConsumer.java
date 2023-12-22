@@ -1,10 +1,12 @@
 package com.kafkaecommerce.payment;
 
 import com.kafkaecommerce.payment.records.Order;
+import com.kafkaecommerce.payment.serializers.OrderRecordDeserializer;
 import com.kafkaecommerce.payment.services.PaymentService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -35,8 +37,8 @@ public class PaymentConsumer implements ApplicationListener<ApplicationContextEv
         properties.setProperty("enable.auto.commit", "true");
         properties.setProperty("auto.commit.interval.ms", "1000");
         properties.setProperty("auto.offset.reset", "latest");
-        properties.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        properties.setProperty("value.deserializer", "com.kafkaecommerce.payment.serializers.OrderRecordDeserializer");
+        properties.setProperty("key.deserializer", StringDeserializer.class.getName());
+        properties.setProperty("value.deserializer", OrderRecordDeserializer.class.getName());
 
         try (KafkaConsumer<String, Order> consumer = new KafkaConsumer<>(properties)) {
             final String KAFKA_TOPIC = "KAFKA_ECOMMERCE_MARKETPLACE";

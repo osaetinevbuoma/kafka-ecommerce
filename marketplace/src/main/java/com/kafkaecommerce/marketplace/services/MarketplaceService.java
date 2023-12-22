@@ -9,9 +9,11 @@ import com.kafkaecommerce.marketplace.records.CartProduct;
 import com.kafkaecommerce.marketplace.records.Order;
 import com.kafkaecommerce.marketplace.records.OrderedProduct;
 import com.kafkaecommerce.marketplace.records.Product;
+import com.kafkaecommerce.marketplace.serializers.OrderRecordSerializer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -97,12 +99,25 @@ public class MarketplaceService {
             properties.put("client.id", InetAddress.getLocalHost().getHostName());
             properties.put("linger.ms", 1);
             properties.put("acks", "all");
-            properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-            properties.put("value.serializer", "com.kafkaecommerce.marketplace.serializers.OrderRecordSerializer");
+            properties.put("key.serializer", StringSerializer.class.getName());
+            properties.put("value.serializer", OrderRecordSerializer.class.getName());
 
             try (Producer<String, Order> producer = new KafkaProducer<>(properties)) {
                 final String KAFKA_TOPIC = "KAFKA_ECOMMERCE_MARKETPLACE";
-                producer.send(new ProducerRecord<>(KAFKA_TOPIC, order.orderId().toString(), order));
+                producer.send(new ProducerRecord<>(KAFKA_TOPIC, order.orderId().toString(), order),
+                        (recordMetadata, exception) -> {
+                            if (exception != null) {
+                                LOGGER.error(exception.getMessage());
+                                return;
+                            }
+
+                            LOGGER.info("Marketplace producer returns with the following metadata");
+                            LOGGER.info("Topic: %s %nPartition: %s %nTimestamp: %s".formatted(
+                                    recordMetadata.topic(),
+                                    recordMetadata.partition(),
+                                    recordMetadata.timestamp()
+                            ));
+                        });
             }
         } catch (UnknownHostException exception) {
             LOGGER.error(exception.getMessage());
