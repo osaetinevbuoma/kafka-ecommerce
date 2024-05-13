@@ -5,7 +5,7 @@ confluent-kafka==2.4.0
 fastapi==0.111.0
 h11==0.14.0
 httptools==0.6.1
-idna==3.6
+idna==3.7
 pydantic==2.6.4
 pydantic_core==2.18.2
 python-dotenv==1.0.1
