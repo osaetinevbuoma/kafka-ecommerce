@@ -2,7 +2,7 @@ annotated-types==0.7.0
 anyio==4.4.0
 click==8.1.7
 confluent-kafka==2.4.0
-fastapi==0.111.0
+fastapi==0.112.0
 h11==0.14.0
 httptools==0.6.1
 idna==3.7
