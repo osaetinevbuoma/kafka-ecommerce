@@ -7,7 +7,7 @@ cryptography==43.0.1
 exceptiongroup==1.2.2
 fastapi==0.115.2
 h11==0.14.0
-httptools==0.6.1
+httptools==0.6.4
 idna==3.10
 pycparser==2.22
 pydantic==2.9.2
