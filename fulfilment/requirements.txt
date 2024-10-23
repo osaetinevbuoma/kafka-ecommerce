@@ -21,7 +21,7 @@ sqlmodel==0.0.22
 starlette==0.41.0
 structlog==24.4.0
 typing_extensions==4.12.2
-uvicorn==0.31.1
+uvicorn==0.32.0
 uvloop==0.21.0
 watchfiles==0.24.0
 websockets==13.1
