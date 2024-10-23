@@ -4,7 +4,7 @@ click==8.1.7
 confluent-kafka==2.6.0
 fastapi==0.115.2
 h11==0.14.0
-httptools==0.6.1
+httptools==0.6.4
 idna==3.10
 pydantic==2.9.2
 pydantic_core==2.23.4
