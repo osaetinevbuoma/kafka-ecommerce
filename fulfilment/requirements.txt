@@ -2,7 +2,7 @@ annotated-types==0.7.0
 anyio==4.6.2.post1
 cffi==1.17.1
 click==8.1.7
-confluent-kafka==2.6.0
+confluent-kafka==2.6.1
 cryptography==43.0.3
 exceptiongroup==1.2.2
 fastapi==0.115.5
