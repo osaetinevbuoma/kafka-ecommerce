@@ -3,7 +3,7 @@ anyio==4.6.2.post1
 cffi==1.17.1
 click==8.1.7
 confluent-kafka==2.6.1
-cryptography==43.0.3
+cryptography==44.0.0
 exceptiongroup==1.2.2
 fastapi==0.115.5
 h11==0.14.0
