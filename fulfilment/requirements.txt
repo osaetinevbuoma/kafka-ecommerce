@@ -5,7 +5,7 @@ click==8.1.7
 confluent-kafka==2.6.1
 cryptography==44.0.0
 exceptiongroup==1.2.2
-fastapi==0.115.5
+fastapi==0.115.6
 h11==0.14.0
 httptools==0.6.4
 idna==3.10
